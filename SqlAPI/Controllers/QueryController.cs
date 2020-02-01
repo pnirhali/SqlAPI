@@ -17,15 +17,15 @@ namespace SqlAPI.Controllers
     [Route("api/[controller]")]
     public class QueryController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        #region Private Variables
 
         private readonly ILogger<QueryController> _logger;
         private readonly SqlDbContext _dbContext;
         private readonly IConfiguration _configuration;
 
+        #endregion
+
+        #region Constroctor
 
         public QueryController(ILogger<QueryController> logger, SqlDbContext sqlDbContext
             , IConfiguration configuration)
@@ -34,6 +34,10 @@ namespace SqlAPI.Controllers
             _dbContext = sqlDbContext;
             _configuration = configuration;
         }
+
+        #endregion
+
+        #region Actions
 
         [HttpPost("Generate")]
         public IActionResult Generate(GenerateQueryReq generateQueryReq)
@@ -89,7 +93,6 @@ namespace SqlAPI.Controllers
             return Ok(result);
         }
 
-
         [HttpGet("Databases")]
         public IActionResult GetDatabases()
         {
@@ -115,5 +118,8 @@ namespace SqlAPI.Controllers
             }
 
         }
+
+        #endregion
+
     }
 }
