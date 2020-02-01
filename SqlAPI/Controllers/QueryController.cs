@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using SqlAPI.Data;
 using SqlAPI.DTO;
+using SqlAPI.Utils;
 
 namespace SqlAPI.Controllers
 {
@@ -19,31 +23,23 @@ namespace SqlAPI.Controllers
         };
 
         private readonly ILogger<QueryController> _logger;
+        private readonly SqlDbContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public QueryController(ILogger<QueryController> logger)
+
+        public QueryController(ILogger<QueryController> logger, SqlDbContext sqlDbContext
+            , IConfiguration configuration)
         {
             _logger = logger;
+            _dbContext = sqlDbContext;
+            _configuration = configuration;
         }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
-
 
         [HttpPost("Generate")]
-        public IActionResult GenerateQuery(GenerateQueryReq generateQueryReq)
+        public IActionResult Generate(GenerateQueryReq generateQueryReq)
         {
             //1. Generate the query
-            string SQL = "use " + generateQueryReq.DatabaseName + "; <br>";
+            string SQL = string.Empty;
 
             string operation = generateQueryReq.Operation.ToLower();
 
@@ -77,13 +73,47 @@ namespace SqlAPI.Controllers
                     break;
             }
 
-
             if (string.IsNullOrWhiteSpace(SQL))
             {
                 return BadRequest("Select the correct opertation");
             }
 
             return Ok(new GenerateQueryRes { SqlQuery = SQL });
+        }
+
+        [HttpPost("Execute")]
+        public IActionResult Execute(ExecuteQueryReq executeQueryReq)
+        {
+            Helper helper = new Helper(_dbContext);
+            var result = helper.ExecuteQuery(executeQueryReq.Query);
+            return Ok(result);
+        }
+
+
+        [HttpGet("Databases")]
+        public IActionResult GetDatabases()
+        {
+            var response = new DatabasesRes();
+            var databases = new List<string>();
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT name from sys.databases", con))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            databases.Add(dr[0].ToString());
+                        }
+                        response.Names = databases;
+                    }
+                }
+                return Ok(response);
+
+            }
+
         }
     }
 }
