@@ -29,14 +29,17 @@ namespace SqlAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-          
+
+
+            services.AddCors();
+
             //  (option => option.EnableEndpointRouting = true
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             //Entity Framework
-            services.AddDbContext<SqlDbContext>(options => 
+            services.AddDbContext<SqlDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
         }

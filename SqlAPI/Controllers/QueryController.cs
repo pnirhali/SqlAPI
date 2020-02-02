@@ -54,7 +54,7 @@ namespace SqlAPI.Controllers
                         + generateQueryReq.TableName + " AND COLUMN_NAME =" + generateQueryReq.ColumnName +
                         ")" + "<br>" + "BEGIN "
                         + "<br>" + "  ALTER TABLE " + generateQueryReq.TableName +
-                       "<br>" + " ADD " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End;";
+                       "<br>" + " ADD " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End; <br><br>";
                     break;
 
                 case "delete":
@@ -62,7 +62,7 @@ namespace SqlAPI.Controllers
                         + generateQueryReq.TableName + " AND COLUMN_NAME = " + generateQueryReq.ColumnName +
                                                 ")" + "<br>" + "BEGIN "
                         + "<br>" + "  ALTER TABLE " + generateQueryReq.TableName +
-                        "<br>" + " DROP " + generateQueryReq.ColumnName + " End;";
+                        "<br>" + " DROP " + generateQueryReq.ColumnName + " End; <br><br>";
                     break;
 
                 case "alter":
@@ -70,7 +70,7 @@ namespace SqlAPI.Controllers
                         + generateQueryReq.TableName + " AND COLUMN_NAME = " + generateQueryReq.ColumnName +
                                                                        ")" + "<br>" + "BEGIN "
                         + "<br>" + "  ALTER TABLE " + generateQueryReq.TableName +
-                      "<br>" + " ALTER COLUMN  " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End;";
+                      "<br>" + " ALTER COLUMN  " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End; <br><br>";
                     break;
 
                 default:
