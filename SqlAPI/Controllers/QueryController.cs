@@ -17,15 +17,13 @@ namespace SqlAPI.Controllers
     [Route("api/[controller]")]
     public class QueryController : ControllerBase
     {
-        #region Private Variables
+        #region Local dependencies
 
         private readonly ILogger<QueryController> _logger;
         private readonly SqlDbContext _dbContext;
         private readonly IConfiguration _configuration;
 
         #endregion
-
-        #region Constroctor
 
         public QueryController(ILogger<QueryController> logger, SqlDbContext sqlDbContext
             , IConfiguration configuration)
@@ -35,57 +33,49 @@ namespace SqlAPI.Controllers
             _configuration = configuration;
         }
 
-        #endregion
-
-        #region Actions
+        #region APIs
 
         [HttpPost("Generate")]
         public IActionResult Generate(GenerateQueryReq generateQueryReq)
         {
-            //1. Generate the query
-            string SQL = string.Empty;
-
             string operation = generateQueryReq.Operation.ToLower();
-
+            _logger.LogInformation($"Executing {operation}");
+            var res = new GenerateQueryRes();
             switch (operation)
             {
                 case "new":
-                    SQL += $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
-                        $" WHERE TABLE_NAME =[{generateQueryReq.TableName}] AND COLUMN_NAME =[{generateQueryReq.ColumnName}] )" +
-                        $" BEGIN ALTER TABLE [{generateQueryReq.TableName}]" +
-                        $" ADD [{generateQueryReq.ColumnName}] {generateQueryReq.ColumnType} End;";
+                    res.SqlQuery = $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
+                         $" WHERE TABLE_NAME =[{generateQueryReq.TableName}] AND COLUMN_NAME =[{generateQueryReq.ColumnName}] )" +
+                         $" BEGIN ALTER TABLE [{generateQueryReq.TableName}]" +
+                         $" ADD [{generateQueryReq.ColumnName}] {generateQueryReq.ColumnType} End;";
                     break;
 
                 case "delete":
-                    SQL += $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
+                    res.SqlQuery = $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
                         $" WHERE TABLE_NAME = [{generateQueryReq.TableName}] AND COLUMN_NAME = [{generateQueryReq.ColumnName}] )" +
                         $" BEGIN  ALTER TABLE [{generateQueryReq.TableName}] " +
                         $" DROP [{generateQueryReq.ColumnName}] End; ";
                     break;
 
                 case "alter":
-                    SQL += $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
+                    res.SqlQuery = $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
                         $" WHERE TABLE_NAME = [{generateQueryReq.TableName}] AND COLUMN_NAME = [{generateQueryReq.ColumnName}] )" +
                         $" BEGIN  ALTER TABLE [{generateQueryReq.TableName}]" +
                         $" ALTER COLUMN  [{generateQueryReq.ColumnName}] {generateQueryReq.ColumnType} End; ";
                     break;
 
                 default:
-                    break;
+                    _logger.LogError($"Invalid Operation : {operation}");
+                    return BadRequest("Select the correct opertation");
             }
 
-            if (string.IsNullOrWhiteSpace(SQL))
-            {
-                return BadRequest("Select the correct opertation");
-            }
-
-            return Ok(new GenerateQueryRes { SqlQuery = SQL });
+            return Ok(res);
         }
 
         [HttpPost("Execute")]
         public IActionResult Execute(ExecuteQueryReq executeQueryReq)
         {
-            Helper helper = new Helper(_dbContext);
+            var helper = new Helper(_dbContext);
             var result = helper.ExecuteQuery(executeQueryReq.Query);
             return Ok(result);
         }

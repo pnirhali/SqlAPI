@@ -12,9 +12,9 @@ namespace SqlAPI.Utils
     public class Helper
     {
 
-        private static SqlDbContext _dbContext;
+        private static DbContext _dbContext;
 
-        public Helper(SqlDbContext sqlDbContext)
+        public Helper(DbContext sqlDbContext)
         {
             _dbContext = sqlDbContext;
         }
