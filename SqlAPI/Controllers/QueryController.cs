@@ -52,25 +52,25 @@ namespace SqlAPI.Controllers
                 case "new":
                     SQL += "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ="
                         + generateQueryReq.TableName + " AND COLUMN_NAME =" + generateQueryReq.ColumnName +
-                        ")" + "<br>" + "BEGIN "
-                        + "<br>" + "  ALTER TABLE " + generateQueryReq.TableName +
-                       "<br>" + " ADD " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End; <br><br>";
+                        ")" + " BEGIN "
+                        + " ALTER TABLE " + generateQueryReq.TableName +
+                       " ADD " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End;";
                     break;
 
                 case "delete":
                     SQL += "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "
                         + generateQueryReq.TableName + " AND COLUMN_NAME = " + generateQueryReq.ColumnName +
-                                                ")" + "<br>" + "BEGIN "
-                        + "<br>" + "  ALTER TABLE " + generateQueryReq.TableName +
-                        "<br>" + " DROP " + generateQueryReq.ColumnName + " End; <br><br>";
+                                                ")" + " BEGIN "
+                        + " ALTER TABLE " + generateQueryReq.TableName +
+                        " DROP " + generateQueryReq.ColumnName + " End; ";
                     break;
 
                 case "alter":
                     SQL += "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "
                         + generateQueryReq.TableName + " AND COLUMN_NAME = " + generateQueryReq.ColumnName +
-                                                                       ")" + "<br>" + "BEGIN "
-                        + "<br>" + "  ALTER TABLE " + generateQueryReq.TableName +
-                      "<br>" + " ALTER COLUMN  " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End; <br><br>";
+                                                                       ")" + " BEGIN "
+                        + " ALTER TABLE " + generateQueryReq.TableName +
+                      " ALTER COLUMN  " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End; ";
                     break;
 
                 default:

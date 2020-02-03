@@ -4,7 +4,7 @@
             <div class="form-container  ">
                 <form (ngSubmit)="onSubmit()" #GenerateForm="ngForm">
                     <div class="form-group">
-                        <label for="databases">Select source database</label>
+                        <label for="databases">Source database</label>
                         <input class="form-control" name="database" [(ngModel)]="Inputform.DatabaseName">
 
                     </div>
@@ -37,7 +37,7 @@
                 <div class="form-container  ">
                     <div class="form-group">
                         <label>SQL Query</label>
-                        <textarea class="form-control" rows="6" cols="70"
+                        <textarea class="form-control" rows="15" cols="70"
                             [(ngModel)]="GenerateQueryRes.SqlQuery"></textarea>
                     </div>
                 </div>
