@@ -30,8 +30,9 @@ namespace SqlAPI
         {
             services.AddControllers();
 
-
-            services.AddCors();
+            services.AddCors(c => c.AddPolicy("AllowAnyOrigin", options => options.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod()));
 
             //  (option => option.EnableEndpointRouting = true
             services.AddMvc()
@@ -55,6 +56,7 @@ namespace SqlAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("AllowAnyOrigin");
 
             app.UseAuthorization();
 
