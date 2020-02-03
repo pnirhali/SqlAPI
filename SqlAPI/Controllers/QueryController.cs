@@ -50,27 +50,24 @@ namespace SqlAPI.Controllers
             switch (operation)
             {
                 case "new":
-                    SQL += "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ="
-                        + generateQueryReq.TableName + " AND COLUMN_NAME =" + generateQueryReq.ColumnName +
-                        ")" + " BEGIN "
-                        + " ALTER TABLE " + generateQueryReq.TableName +
-                       " ADD " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End;";
+                    SQL += $"IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS " +
+                        $"WHERE TABLE_NAME ={generateQueryReq.TableName} AND COLUMN_NAME ={generateQueryReq.ColumnName})" +
+                        $" BEGIN ALTER TABLE {generateQueryReq.TableName} " +
+                        $"ADD {generateQueryReq.ColumnName} {generateQueryReq.ColumnType} End;";
                     break;
 
                 case "delete":
-                    SQL += "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "
-                        + generateQueryReq.TableName + " AND COLUMN_NAME = " + generateQueryReq.ColumnName +
-                                                ")" + " BEGIN "
-                        + " ALTER TABLE " + generateQueryReq.TableName +
-                        " DROP " + generateQueryReq.ColumnName + " End; ";
+                    SQL += $"IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS " +
+                        $"WHERE TABLE_NAME = {generateQueryReq.TableName} AND COLUMN_NAME = {generateQueryReq.ColumnName}) " +
+                        $"BEGIN  ALTER TABLE {generateQueryReq.TableName} " +
+                        $"DROP {generateQueryReq.ColumnName} End; ";
                     break;
 
                 case "alter":
-                    SQL += "IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "
-                        + generateQueryReq.TableName + " AND COLUMN_NAME = " + generateQueryReq.ColumnName +
-                                                                       ")" + " BEGIN "
-                        + " ALTER TABLE " + generateQueryReq.TableName +
-                      " ALTER COLUMN  " + generateQueryReq.ColumnName + " " + generateQueryReq.ColumnType + " End; ";
+                    SQL += $"IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS " +
+                        $"WHERE TABLE_NAME = {generateQueryReq.TableName} AND COLUMN_NAME = {generateQueryReq.ColumnName}) " +
+                        $"BEGIN  ALTER TABLE {generateQueryReq.TableName} " +
+                        $"ALTER COLUMN  {generateQueryReq.ColumnName} {generateQueryReq.ColumnType} End; ";
                     break;
 
                 default:
