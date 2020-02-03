@@ -6,15 +6,20 @@ import { AppComponent } from './app.component';
 import { FormComponent } from './form/form.component';
 import { SqlOperationService } from './Services/sql-operation.service';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ExecuterComponent } from './executer/executer.component';
+
 @NgModule({
   declarations: [
     AppComponent,
-    FormComponent
+    FormComponent,
+    ExecuterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule
     
   ],
   providers: [SqlOperationService],

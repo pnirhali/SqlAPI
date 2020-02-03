@@ -1,40 +1,46 @@
-<div class="container">
-    <div class="form-container  col-md-5">
-<form (ngSubmit)="onSubmit()" #GenerateForm="ngForm" >
-    <div class="form-group"  >
-        <label for="databases">Select source database</label>
-        <select class="form-control" name="database" [(ngModel)]="Inputform.DatabaseName" >
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-    <div class="form-group" >
-      <label for="tableName">Table Name</label>
-      <input  class="form-control" name="tableName" [(ngModel)]="Inputform.TableName"  >
+<div class="row">
+    <div class="  d-flex flex-xl-row col-md-5">
+        <div class="container">
+            <div class="form-container  ">
+                <form (ngSubmit)="onSubmit()" #GenerateForm="ngForm">
+                    <div class="form-group">
+                        <label for="databases">Select source database</label>
+                        <input class="form-control" name="database" [(ngModel)]="Inputform.DatabaseName">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="tableName">Table Name</label>
+                        <input class="form-control" name="tableName" [(ngModel)]="Inputform.TableName">
+                    </div>
+                    <div class="form-group">
+                        <label for="columnName">Column Name</label>
+                        <input class="form-control" name="columnName" [(ngModel)]="Inputform.ColumnName">
+                    </div>
+                    <div class="form-group">
+                        <label for="actions">Action</label>
+                        <input class="form-control" name="action" [(ngModel)]="Inputform.Operation">
+                    </div>
+                    <div class="form-group">
+                        <label for="dataType">Data Type</label>
+                        <input class="form-control" name="dataType" [(ngModel)]="Inputform.ColumnType">
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <p>{{generateQueryRes.sqlQuery}}</p>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="columnName">Column Name</label>
-        <input  class="form-control" name="columnName"  [(ngModel)]="Inputform.ColumnName"  >
-      </div>
-    <div class="form-group">
-      <label for="actions">Action</label>
-      <select multiple class="form-control" name="action" [(ngModel)]="Inputform.Operation" >
-        <option>New</option>
-        <option>Alter</option>
-        <option>Delete</option>
-      </select>
+    <div>
+        <div class="flex-xl-row-reverse   ">
+            <div class="container">
+                <div class="form-container  ">
+                    <div class="form-group">
+                        <label>SQL Query</label>
+                        <textarea class="form-control" rows="6" cols="70"
+                            [(ngModel)]="GenerateQueryRes.SqlQuery"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="dataType">Data Type</label>
-        <select multiple class="form-control" name="dataType" [(ngModel)]="Inputform.ColumnType">
-          <option>int</option>
-          <option>nvarchar(100)</option>
-        </select>
-      </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
- <h1> Gi</h1> <h1>{{Inputform.DatabaseName}}</h1>
-    </div></div>

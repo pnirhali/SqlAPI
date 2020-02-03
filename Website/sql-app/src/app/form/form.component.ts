@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SqlOperationService } from '../Services/sql-operation.service';
 import { Sqlform } from '../Services/sqlform.model';
 import { FormBuilder } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { GenerateQueryRes } from '../Models/generate-query-res';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-form',
@@ -12,14 +15,28 @@ export class FormComponent implements OnInit {
   hero: string = "TEST"
   data: Sqlform
   Inputform = new Sqlform();
+  GenerateQueryRes: GenerateQueryRes;
   submitted;
-  onSubmit() { this.submitted = true; }
+
+  onSubmit() {
+    this.service.GenerateSQL(this.Inputform)
+      .subscribe(response => {
+        console.log(response);
+        this.GenerateQueryRes = new GenerateQueryRes(response);
+      })
+    this.submitted = true;
+  }
 
   constructor(private service: SqlOperationService) {
   }
-  
+
 
   ngOnInit() {
+    this.GenerateQueryRes = new GenerateQueryRes(null);
   }
 
 }
+
+/**
+ * class res
+ */
