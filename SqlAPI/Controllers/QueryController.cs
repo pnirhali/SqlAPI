@@ -62,7 +62,7 @@ namespace SqlAPI.Controllers
                 var camelCaseName = char.ToLowerInvariant(name[0]) + name.Substring(1);
                 colHeaders.Add(camelCaseName);
             }
-            return Ok(new { ColumnHeaders = colHeaders, Rows = dataset });
+            return Ok(new ExecuteQueryRes { ColumnHeaders = colHeaders, Rows = dataset });
         }
 
         [HttpGet("Databases")]
