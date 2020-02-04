@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SqlAPI.Data;
+using SqlAPI.Services;
 
 namespace SqlAPI
 {
@@ -42,6 +43,13 @@ namespace SqlAPI
             //Entity Framework
             services.AddDbContext<SqlDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Operations
+            services.AddTransient<NewOperation>();
+            services.AddTransient<DeleteOperation>();
+            services.AddTransient<AlterOperation>();
+            services.AddTransient<IOperationResolver, OperationResolver>();
+
 
         }
 

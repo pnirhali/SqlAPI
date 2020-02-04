@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SqlAPI.Data;
 using SqlAPI.DTO;
+using SqlAPI.Services;
 using SqlAPI.Utils;
 
 namespace SqlAPI.Controllers
@@ -22,15 +23,17 @@ namespace SqlAPI.Controllers
         private readonly ILogger<QueryController> _logger;
         private readonly SqlDbContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly IOperationResolver _operationResolver;
 
         #endregion
 
         public QueryController(ILogger<QueryController> logger, SqlDbContext sqlDbContext
-            , IConfiguration configuration)
+            , IConfiguration configuration, IOperationResolver operationResolver)
         {
             _logger = logger;
             _dbContext = sqlDbContext;
             _configuration = configuration;
+            _operationResolver = operationResolver;
         }
 
         #region APIs
@@ -38,37 +41,11 @@ namespace SqlAPI.Controllers
         [HttpPost("Generate")]
         public IActionResult Generate(GenerateQueryReq generateQueryReq)
         {
-            string operation = generateQueryReq.Operation.ToLower();
-            _logger.LogInformation($"Executing {operation}");
+            string operationName = generateQueryReq.Operation.ToLowerInvariant();
+            _logger.LogInformation($"Executing {operationName}");
             var res = new GenerateQueryRes();
-            switch (operation)
-            {
-                case "new":
-                    res.SqlQuery = $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
-                         $" WHERE TABLE_NAME =[{generateQueryReq.TableName}] AND COLUMN_NAME =[{generateQueryReq.ColumnName}] )" +
-                         $" BEGIN ALTER TABLE [{generateQueryReq.TableName}]" +
-                         $" ADD [{generateQueryReq.ColumnName}] {generateQueryReq.ColumnType} End;";
-                    break;
-
-                case "delete":
-                    res.SqlQuery = $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
-                        $" WHERE TABLE_NAME = [{generateQueryReq.TableName}] AND COLUMN_NAME = [{generateQueryReq.ColumnName}] )" +
-                        $" BEGIN  ALTER TABLE [{generateQueryReq.TableName}] " +
-                        $" DROP [{generateQueryReq.ColumnName}] End; ";
-                    break;
-
-                case "alter":
-                    res.SqlQuery = $"IF EXISTS ( SELECT * FROM INFORMATION_SCHEMA.COLUMNS" +
-                        $" WHERE TABLE_NAME = [{generateQueryReq.TableName}] AND COLUMN_NAME = [{generateQueryReq.ColumnName}] )" +
-                        $" BEGIN  ALTER TABLE [{generateQueryReq.TableName}]" +
-                        $" ALTER COLUMN  [{generateQueryReq.ColumnName}] {generateQueryReq.ColumnType} End; ";
-                    break;
-
-                default:
-                    _logger.LogError($"Invalid Operation : {operation}");
-                    return BadRequest("Select the correct opertation");
-            }
-
+            var operation = _operationResolver.ResolveOperation(operationName);
+            res.SqlQuery = operation.GenerateQuery(generateQueryReq);
             return Ok(res);
         }
 
