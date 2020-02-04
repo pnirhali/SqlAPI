@@ -20,10 +20,8 @@ export class FormComponent implements OnInit {
 
   onSubmit() {
     this.service.GenerateSQL(this.Inputform)
-      .subscribe(response => {
-        console.log(response);
-        this.GenerateQueryRes = new GenerateQueryRes(response);
-      })
+      .subscribe(response => this.GenerateQueryRes = new GenerateQueryRes(response),
+        err => this.showError(err))
     this.submitted = true;
   }
 
@@ -33,6 +31,11 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.GenerateQueryRes = new GenerateQueryRes(null);
+  }
+
+  showError(error: any) {
+    var message = error.error.title;
+    alert(message);
   }
 
 }
