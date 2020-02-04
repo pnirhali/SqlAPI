@@ -22,7 +22,11 @@ export class FormComponent implements OnInit {
     this.service.GenerateSQL(this.Inputform)
       .subscribe(response => {
         this.GenerateQueryRes = new GenerateQueryRes(response);
-      }, err => this.showError(err))
+      }, err => {
+        this.showError(err);
+        this.GenerateQueryRes = new GenerateQueryRes(null); // clear UI
+      }
+      )
   }
 
   executeSQL() {
@@ -34,7 +38,10 @@ export class FormComponent implements OnInit {
     this.service.ExecuteSQL(this.GenerateQueryRes.SqlQuery)
       .subscribe(response => {
         this.Dataset = response;
-      }, err => this.showError(err))
+      }, err => {
+        this.showError(err);
+        this.Dataset = new Object();// clear UI
+      })
   }
 
   constructor(private service: SqlOperationService) {
