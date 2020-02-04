@@ -56,13 +56,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th *ngFor="let col of data.ColumnNames">{{ col }}</th>
+                            <th *ngFor="let col of Dataset.columnHeaders">{{ col }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of data.Rows">
-                            <td *ngFor="let col of data.ColumnNames">
-                                {{ row.Cells[col].Data }}
+                        <tr *ngFor="let row of Dataset.rows">
+                            <td *ngFor="let col of Dataset.columnHeaders">
+                                {{ row[col] }}
                             </td>
                         </tr>
                     </tbody>
