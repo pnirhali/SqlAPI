@@ -36,20 +36,24 @@ namespace SqlAPI.Services.Tests
             Assert.ThrowsException<InvalidOperationException>(() => operationResolver.ResolveOperation("blah operation"));
         }
 
-        [TestMethod]
-        public void ResolveOperation_For_NewOperation_Returns_NewOperation()
+        [DataTestMethod]
+        [DataRow("new", typeof(NewOperation))]
+        [DataRow("alter", typeof(AlterOperation))]
+        [DataRow("delete", typeof(DeleteOperation))]
+        public void ResolveOperation_For_ValidOperation_Returns_IOperation(string operationName, Type operationType)
         {
             // Mock the dependencies
             var loggerMock = new Mock<ILogger<OperationResolver>>();
             var serviceProviderMock = new Mock<IServiceProvider>();
-            serviceProviderMock.Setup(m => m.GetService(typeof(NewOperation))).Returns(new NewOperation());
+            serviceProviderMock.Setup(m => m.GetService(operationType)).Returns(Activator.CreateInstance(operationType));
 
             // Call 
             var operationResolver = new OperationResolver(serviceProviderMock.Object, loggerMock.Object);
-            var operation = operationResolver.ResolveOperation("new");
+            var operation = operationResolver.ResolveOperation(operationName);
 
             // Assert
-            Assert.IsInstanceOfType(operation, typeof(NewOperation));
+            Assert.IsInstanceOfType(operation, operationType); // exact instance
+            Assert.IsInstanceOfType(operation, typeof(IOperation)); // interface
         }
     }
 }
