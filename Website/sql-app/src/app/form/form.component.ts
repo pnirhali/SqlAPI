@@ -15,7 +15,7 @@ export class FormComponent implements OnInit {
   hero: string = "TEST"
   data: Sqlform
   Inputform = new Sqlform();
-  GenerateQueryRes: GenerateQueryRes = new GenerateQueryRes();
+  GenerateQueryRes: GenerateQueryRes;
   Dataset: any;
 
   generateSQL() {

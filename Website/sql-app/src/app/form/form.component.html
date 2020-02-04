@@ -27,7 +27,7 @@
 
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <p>{{generateQueryRes.sqlQuery}}</p>
+                        <p>{{generateQueryRes.SqlQuery}}</p>
                     </form>
                 </div>
             </div>
@@ -53,7 +53,20 @@
         <div class="d-flex flex-xl-row col-md-5">
             <div class="container">
                 <div>Data set</div>
-                <div>{{Dataset}}</div>
+                <table mdbTable>
+                    <thead>
+                        <tr>
+                            <th *ngFor="let row of Headers" scope="col">{{head}} </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr mdbTableCol *ngFor="let row of Dataset">
+                            <td>{{row.userId}}</td>
+                            <td>{{row.email}}</td>
+                            <td>{{row.password}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

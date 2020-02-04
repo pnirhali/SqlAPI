@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Sqlform, ExecuteQueryReq } from './sqlform.model';
+import { Sqlform } from './sqlform.model';
 import { HttpClient, } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { HttpHeaders, HttpClientModule } from '@angular/common/http';
