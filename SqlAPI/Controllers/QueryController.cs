@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,8 +54,15 @@ namespace SqlAPI.Controllers
         public IActionResult Execute(ExecuteQueryReq executeQueryReq)
         {
             var helper = new Helper(_dbContext);
-            var result = helper.ExecuteQuery(executeQueryReq.Query);
-            return Ok(result);
+            var dataset = helper.ExecuteQuery(executeQueryReq.Query);
+            var colHeaders = new List<string>();
+            foreach (DataColumn col in dataset.Columns)
+            {
+                var name = col.ColumnName;
+                var camelCaseName = char.ToLowerInvariant(name[0]) + name.Substring(1);
+                colHeaders.Add(camelCaseName);
+            }
+            return Ok(new { ColumnHeaders = colHeaders, Dataset = dataset });
         }
 
         [HttpGet("Databases")]

@@ -53,17 +53,17 @@
         <div class="d-flex flex-xl-row col-md-5">
             <div class="container">
                 <div>Data set</div>
-                <table mdbTable>
+                <table>
                     <thead>
                         <tr>
-                            <th *ngFor="let row of Headers" scope="col">{{head}} </th>
+                            <th *ngFor="let col of data.ColumnNames">{{ col }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr mdbTableCol *ngFor="let row of Dataset">
-                            <td>{{row.userId}}</td>
-                            <td>{{row.email}}</td>
-                            <td>{{row.password}}</td>
+                        <tr *ngFor="let row of data.Rows">
+                            <td *ngFor="let col of data.ColumnNames">
+                                {{ row.Cells[col].Data }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
