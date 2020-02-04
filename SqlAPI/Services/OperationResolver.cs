@@ -34,7 +34,7 @@ namespace SqlAPI.Services
                 case "alter": return _serviceProvider.GetService<AlterOperation>();
 
                 default:
-                    _logger.LogError($"Unnown operation : {operationName}");
+                    _logger.LogError($"Unkown operation : {operationName}");
                     throw new InvalidOperationException(operationName);
             };
         }
