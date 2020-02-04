@@ -2,7 +2,7 @@
     <div class="  d-flex flex-xl-row col-md-5">
         <div class="container">
             <div class="form-container  ">
-                <form (ngSubmit)="onSubmit()" #GenerateForm="ngForm">
+                <form (ngSubmit)="generateSQL()" #GenerateForm="ngForm">
                     <div class="form-group">
                         <label for="databases">Source database</label>
                         <input class="form-control" name="database" [(ngModel)]="Inputform.DatabaseName">
@@ -35,11 +35,14 @@
         <div class="flex-xl-row-reverse   ">
             <div class="container">
                 <div class="form-container  ">
-                    <div class="form-group">
-                        <label>SQL Query</label>
-                        <textarea class="form-control" rows="15" cols="70"
-                            [(ngModel)]="GenerateQueryRes.SqlQuery"></textarea>
-                    </div>
+                    <form (ngSubmit)="executeSQL()" #ExecuteForm="ngForm">
+                        <div class="form-group">
+                            <label>SQL Query</label>
+                            <textarea class="form-control" rows="15" cols="70"
+                                [(ngModel)]="GenerateQueryRes.SqlQuery"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Execute</button>
+                    </form>
                 </div>
             </div>
         </div>

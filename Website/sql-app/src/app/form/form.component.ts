@@ -18,11 +18,14 @@ export class FormComponent implements OnInit {
   GenerateQueryRes: GenerateQueryRes;
   submitted;
 
-  onSubmit() {
+  generateSQL() {
     this.service.GenerateSQL(this.Inputform)
       .subscribe(response => this.GenerateQueryRes = new GenerateQueryRes(response),
         err => this.showError(err))
     this.submitted = true;
+  }
+  executeSQL() {
+    alert("executing sql")
   }
 
   constructor(private service: SqlOperationService) {
