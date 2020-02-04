@@ -5,3 +5,5 @@ export class Sqlform {
       Operation: string
       ColumnType: string
 }
+
+

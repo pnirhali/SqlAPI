@@ -15,19 +15,26 @@ export class FormComponent implements OnInit {
   hero: string = "TEST"
   data: Sqlform
   Inputform = new Sqlform();
-  GenerateQueryRes: GenerateQueryRes;
-  submitted;
+  GenerateQueryRes: GenerateQueryRes = new GenerateQueryRes();
+  Dataset: any;
 
   generateSQL() {
     this.service.GenerateSQL(this.Inputform)
       .subscribe(response => {
         this.GenerateQueryRes = new GenerateQueryRes(response);
-        debugger;
       }, err => this.showError(err))
-    this.submitted = true;
   }
+
   executeSQL() {
-    alert("executing sql")
+    if (!this.GenerateQueryRes.SqlQuery) {
+      alert("SQL query is empty");
+      return;
+    }
+
+    this.service.ExecuteSQL(this.GenerateQueryRes.SqlQuery)
+      .subscribe(response => {
+        this.Dataset = response;
+      }, err => this.showError(err))
   }
 
   constructor(private service: SqlOperationService) {
@@ -40,6 +47,9 @@ export class FormComponent implements OnInit {
 
   showError(error: any) {
     var message = error.error.title;
+    if (!message) {
+      message = error.message;
+    }
     alert(message);
   }
 

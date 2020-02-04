@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Sqlform } from './sqlform.model';
+import { Sqlform, ExecuteQueryReq } from './sqlform.model';
 import { HttpClient, } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { HttpHeaders, HttpClientModule } from '@angular/common/http';
@@ -19,13 +19,15 @@ let options = {
 
 export class SqlOperationService {
 
-
-  formData: Sqlform
   constructor(private httpClient: HttpClient) { }
 
+  GenerateSQL(formData: Sqlform) {
+    return this.httpClient.post("https://localhost:44385/api/Query/Generate", formData)
+      .map((response: Response) => response);
+  }
 
-  GenerateSQL(formData) {
-    return this.httpClient.post("https://localhost:44385/api/Query/Generate", formData, options)
+  ExecuteSQL(query: string) {
+    return this.httpClient.post("https://localhost:44385/api/Query/Execute", { "query": query })
       .map((response: Response) => response);
   }
 
