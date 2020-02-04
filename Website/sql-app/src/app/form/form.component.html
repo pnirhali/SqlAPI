@@ -35,12 +35,12 @@
         <div class="flex-xl-row-reverse   ">
             <div class="container">
                 <div class="form-container  ">
+                    <div class="form-group">
+                        <label>SQL Query</label>
+                        <textarea class="form-control" rows="15" cols="70"
+                            [(ngModel)]="GenerateQueryRes.SqlQuery"></textarea>
+                    </div>
                     <form (ngSubmit)="executeSQL()" #ExecuteForm="ngForm">
-                        <div class="form-group">
-                            <label>SQL Query</label>
-                            <textarea class="form-control" rows="15" cols="70"
-                                [(ngModel)]="GenerateQueryRes.SqlQuery"></textarea>
-                        </div>
                         <button type="submit" class="btn btn-primary">Execute</button>
                     </form>
                 </div>

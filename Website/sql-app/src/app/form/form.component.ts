@@ -20,8 +20,10 @@ export class FormComponent implements OnInit {
 
   generateSQL() {
     this.service.GenerateSQL(this.Inputform)
-      .subscribe(response => this.GenerateQueryRes = new GenerateQueryRes(response),
-        err => this.showError(err))
+      .subscribe(response => {
+        this.GenerateQueryRes = new GenerateQueryRes(response);
+        debugger;
+      }, err => this.showError(err))
     this.submitted = true;
   }
   executeSQL() {
