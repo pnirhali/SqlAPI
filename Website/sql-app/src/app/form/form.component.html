@@ -69,10 +69,10 @@
         <div class="d-flex flex-xl-row col-md-5">
             <div class="container">
                 <div><b>Data set</b></div>
-                <table>
+                <table class="table">
                     <thead>
                         <tr>
-                            <th *ngFor="let col of Dataset.columnHeaders">{{ col }}</th>
+                            <th scope="col" *ngFor="let col of Dataset.columnHeaders">{{ col }}</th>
                         </tr>
                     </thead>
                     <tbody>
