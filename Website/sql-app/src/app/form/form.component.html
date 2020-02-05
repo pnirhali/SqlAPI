@@ -1,6 +1,6 @@
 <div>
     <div class="row">
-        <div class="  d-flex flex-xl-row col-md-5">
+        <div class="d-flex flex-xl-row col-md-5">
             <div class="container">
                 <div class="form-container  ">
                     <form (ngSubmit)="generateSQL()" #GenerateForm="ngForm">
@@ -34,7 +34,7 @@
         <div>
             <div class="flex-xl-row-reverse   ">
                 <div class="container">
-                    <div class="form-container  ">
+                    <div class="form-container ">
                         <div class="form-group">
                             <label>SQL Query</label>
                             <textarea class="form-control" rows="15" cols="70"
@@ -43,15 +43,26 @@
                         <form (ngSubmit)="executeSQL()" #ExecuteForm="ngForm">
                             <button type="submit" class="btn btn-primary">Execute</button>
                         </form>
-                        <div class="file-container">
-                        <button class="file-button" (click)="saveAsProject()">Save As</button>
-                        <br>
-                      </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Save file -->
+    <div class="row">
+        <div class="d-flex flex-xl-row col-md-5">
+            <div class="container">
+                <label>File Name</label>
+                <input class="form-control" [(ngModel)]="FileName">
+            </div>
+            <div class="file-container" style="margin-top: 32px;">
+                <button class="btn btn-primary" (click)="saveToFile()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show data table -->
     <div class="row">
         <div class="d-flex flex-xl-row col-md-5">
             <div class="container">

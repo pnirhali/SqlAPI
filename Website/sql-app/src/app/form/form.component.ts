@@ -18,12 +18,13 @@ export class FormComponent implements OnInit {
   Inputform = new Sqlform();
   GenerateQueryRes: GenerateQueryRes;
   Dataset: any;
+  FileName: string;
 
   generateSQL() {
     this.service.GenerateSQL(this.Inputform)
       .subscribe(response => {
         this.GenerateQueryRes = new GenerateQueryRes(response);
-       
+
       }, err => {
         this.showError(err);
         this.GenerateQueryRes = new GenerateQueryRes(null); // clear UI
@@ -49,7 +50,7 @@ export class FormComponent implements OnInit {
   constructor(private service: SqlOperationService) {
   }
 
- 
+
   ngOnInit() {
     this.GenerateQueryRes = new GenerateQueryRes(null);
   }
@@ -62,20 +63,22 @@ export class FormComponent implements OnInit {
     alert(message);
   }
 
-  saveAsProject(){
-    //you can enter your own file name and extension
-    this.writeContents(this.GenerateQueryRes.SqlQuery, 'Sample File'+'.txt', 'text/plain');
+  saveToFile() {
+    if (!this.FileName) {
+      alert('File name is empty');
+      return;
+    }
+    if (!this.GenerateQueryRes.SqlQuery) {
+      alert('SQL query is empty');
+      return;
+    }
+
+    this.writeContents(this.GenerateQueryRes.SqlQuery, this.FileName + '.sql', 'text/plain');
   }
 
-  writeContents(content, fileName, contentType) {
-   // var a = document.createElement('a');
-    var file = new Blob([content], {type: contentType});
-    // a.href = URL.createObjectURL(file);
-    // a.download = fileName;
-    // a.click();
-
-    saveAs(file,fileName)
-  
+  writeContents(content: string, fileName: string, contentType: string) {
+    var file = new Blob([content], { type: contentType });
+    saveAs(file, fileName)
   }
 
 
