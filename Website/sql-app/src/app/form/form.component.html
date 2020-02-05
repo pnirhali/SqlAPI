@@ -27,7 +27,6 @@
 
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <p>{{generateQueryRes.SqlQuery}}</p>
                     </form>
                 </div>
             </div>
@@ -44,6 +43,10 @@
                         <form (ngSubmit)="executeSQL()" #ExecuteForm="ngForm">
                             <button type="submit" class="btn btn-primary">Execute</button>
                         </form>
+                        <div class="file-container">
+                        <button class="file-button" (click)="saveAsProject()">Save As</button>
+                        <br>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -70,4 +73,5 @@
             </div>
         </div>
     </div>
+
 </div>

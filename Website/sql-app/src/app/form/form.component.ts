@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { GenerateQueryRes } from '../Models/generate-query-res';
 import { Observable } from 'rxjs';
+import 'rxjs/add/operator/toPromise';
 
 @Component({
   selector: 'app-form',
@@ -22,6 +23,7 @@ export class FormComponent implements OnInit {
     this.service.GenerateSQL(this.Inputform)
       .subscribe(response => {
         this.GenerateQueryRes = new GenerateQueryRes(response);
+       
       }, err => {
         this.showError(err);
         this.GenerateQueryRes = new GenerateQueryRes(null); // clear UI
@@ -47,7 +49,7 @@ export class FormComponent implements OnInit {
   constructor(private service: SqlOperationService) {
   }
 
-
+ 
   ngOnInit() {
     this.GenerateQueryRes = new GenerateQueryRes(null);
   }
@@ -59,6 +61,23 @@ export class FormComponent implements OnInit {
     }
     alert(message);
   }
+
+  saveAsProject(){
+    //you can enter your own file name and extension
+    this.writeContents(this.GenerateQueryRes.SqlQuery, 'Sample File'+'.txt', 'text/plain');
+  }
+
+  writeContents(content, fileName, contentType) {
+   // var a = document.createElement('a');
+    var file = new Blob([content], {type: contentType});
+    // a.href = URL.createObjectURL(file);
+    // a.download = fileName;
+    // a.click();
+
+    saveAs(file,fileName)
+  
+  }
+
 
 }
 
