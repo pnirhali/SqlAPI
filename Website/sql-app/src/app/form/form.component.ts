@@ -72,12 +72,12 @@ export class FormComponent implements OnInit {
       alert('SQL query is empty');
       return;
     }
-
     this.writeContents(this.GenerateQueryRes.SqlQuery, this.FileName + '.sql', 'text/plain');
   }
 
   writeContents(content: string, fileName: string, contentType: string) {
     var file = new Blob([content], { type: contentType });
+
     saveAs(file, fileName)
   }
 
