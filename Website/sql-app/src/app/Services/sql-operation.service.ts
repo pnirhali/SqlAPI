@@ -5,7 +5,8 @@ import 'rxjs/add/operator/map';
 import { HttpHeaders, HttpClientModule } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { saveAs } from 'file-saver';
- 
+import { GenerateQueryEndpoint, ExecuteQueryEndpoint } from './constants';
+
 let headers = new HttpHeaders({
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
@@ -42,12 +43,12 @@ export class SqlOperationService {
 
 
   GenerateSQL(formData: Sqlform) {
-    return this.httpClient.post("https://localhost:44385/api/Query/Generate", formData)
+    return this.httpClient.post(GenerateQueryEndpoint, formData)
       .map((response: Response) => response);
   }
 
   ExecuteSQL(query: string) {
-    return this.httpClient.post("https://localhost:44385/api/Query/Execute", { "query": query })
+    return this.httpClient.post(ExecuteQueryEndpoint, { "query": query })
       .map((response: Response) => response);
   }
 
